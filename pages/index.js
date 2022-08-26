@@ -1,69 +1,56 @@
+import {useState} from "react";
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
+
+//TODO component imports, combine into one import
+import {MapModal} from "../components/map_modal";
+import {Log} from "./log"
+import {Environment} from "./environment";
+
+//Font imports
+
+
 export default function Home() {
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Reel Legends (Next.js)</title>
-        <meta name="idle fishing game" content="Created using React, Next.js and Node.js" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    const [showMap, setShowMap] = useState(false);
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+    return (
+        <div className={styles.container}>
+            <Head>
+                <title>Reel Legends (Next.js)</title>
+                <meta name="idle fishing game created by Andy" content="Created using React, Next.js and Node.js" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+            <header>
+                <h1>Reel Legends</h1>
+                <h2>A Fishing Adventure</h2>
+            </header>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+            <main className={styles.main}>
+                <section className={styles.menuBar}>
+                    <button onClick={() => setShowMap(true)}>Map</button>
+                    <button className={styles.button}>Player</button>
+                    <button>Inventory</button>
+                    <button>Shop</button>
+                    <button>Quests</button>
+                    <button>Achievements</button>
+                    <button>Stats</button>
+                    <button>Guide</button>
+                </section>
+                <section className={styles.gameGrid}>
+                    <section className={styles.loadoutBar}>
+                        <h1>loadout placeholder</h1>
+                    </section>
+                    <Environment />
+                    <Log />
+                    <MapModal onClose={() => setShowMap(false)} show={showMap}  />
+                </section>
+            </main>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+            <footer className={styles.footer}>
+            </footer>
         </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
-    </div>
-  )
+    )
 }

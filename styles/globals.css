@@ -1,26 +1,40 @@
+
+@font-face {
+  font-family: "ST03R";
+  src: url('../fonts/ST03R.TTF');
+
+}
+
+@font-face {
+  font-family: "venice";
+  src: url('../fonts/VeniceClassic.ttf');
+
+}
 html,
 body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
+  --accent-primary: lime;
+  --background-primary: #F2DAA7;
+  --background-secondary: #998A6A;
+  --background-modal: rgba(0,0,0,0.5);
+  --color-black: #272727;
+  --color-white: white;
+  --content-font: 'ST03R';
+  --title-font: 'venice';
+  --other-font: 'roboto';
+  --color-common: #B9B9B9;
+  --color-uncommon: #C5FF49;
+  --color-rare: #60B2FF;
+  --color-exceptional: #FF9C07;
+  --color-legendary: #FFE600;
+  --color-mythical: #8F00FF;
 }
 
 * {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
-}
+
