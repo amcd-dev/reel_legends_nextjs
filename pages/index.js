@@ -1,19 +1,49 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-
 
 //TODO component imports, combine into one import
 import {MapModal} from "../components/map_modal";
 import {Log} from "./log"
 import {Environment} from "./environment";
+import {CatchModal} from "../components/catch_modal";
 
-//Font imports
+//Global Variables
 
+
+//API Calls
+//TODO move to another module & import
+let apiPath = () => {
+    if (location.hostname === 'localhost') {
+        return 'http://127.0.0.1:3001';
+    } else {
+        return 'https://reelalpha.herokuapp.com'
+    }
+}
 
 export default function Home() {
+    const [latestFish, setLatestFish] = useState({})
+    const [playerState, setPlayerState] = useState({})
+    const [loggedEvents, setLoggedEvents] = useState([])
+    // console.log('>>> [Page render or update] Logging latestFish state', latestFish)
+    // console.log('>>> [Page render or update] Logging loggedEvents array', loggedEvents)
+    // console.log('>>> [Page render or update] Logging playerState state', playerState)
+
+    {/* Modal States */}
     const [showMap, setShowMap] = useState(false);
+    const [showCatch, setShowCatch] = useState(false)
+
+    {/* Functions */}
+    async function handleCastClick () {
+        console.log('>>> [1] initialising handleCastClick & starting getFish fetch')
+        const response = await fetch(`${apiPath()}/getFish`)
+        const newFish = await response.json()
+        console.log('>>> [2] setting states for loggedEvents and latestFish')
+        setLoggedEvents(current => [...current, newFish])
+        setLatestFish(newFish)
+        setShowCatch(true)
+    }
 
     return (
         <div className={styles.container}>
@@ -23,7 +53,7 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <header>
+            <header className={styles.mainHead}>
                 <h1>Reel Legends</h1>
                 <h2>A Fishing Adventure</h2>
             </header>
@@ -31,7 +61,7 @@ export default function Home() {
             <main className={styles.main}>
                 <section className={styles.menuBar}>
                     <button onClick={() => setShowMap(true)}>Map</button>
-                    <button className={styles.button}>Player</button>
+                    <button>Player</button>
                     <button>Inventory</button>
                     <button>Shop</button>
                     <button>Quests</button>
@@ -39,14 +69,18 @@ export default function Home() {
                     <button>Stats</button>
                     <button>Guide</button>
                 </section>
+                {/* ----- Game Grid ----- */}
                 <section className={styles.gameGrid}>
                     <section className={styles.loadoutBar}>
                         <h1>loadout placeholder</h1>
                     </section>
+                    <button className={styles.castButton} onClick={handleCastClick}>Cast</button>
+                    <Log catchEvent={loggedEvents}/>
                     <Environment />
-                    <Log />
                     <MapModal onClose={() => setShowMap(false)} show={showMap}  />
+                    <CatchModal latestCatch={latestFish} onClose={() => setShowCatch(false)} show={showCatch} />
                 </section>
+                {/* ----- Game Grid ----- */}
             </main>
 
             <footer className={styles.footer}>

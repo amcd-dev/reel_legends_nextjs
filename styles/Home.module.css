@@ -10,20 +10,24 @@
 /*---------------------*/
 /* Header Bar Styling */
 /*-------------------*/
-
-
+.mainHead {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  font-family: var(--title-font);
+  text-align: center;
+}
 
 /*-------------------*/
 /* Menu Bar Styling */
 /*-----------------*/
-
 .menuBar {
   border-top: solid 2px var(--background-secondary);
   border-bottom: solid 2px var(--background-secondary);
   display: flex;
   justify-content:space-evenly;
   margin: 0 auto;
-  width: 1000px;
+  max-width: 1000px;
   min-width: 250px;
   background-color: var(--background-primary);
 }
@@ -42,16 +46,19 @@
 
 }
 
-.button {
-  font-family: var(--content-font);
-}
-
 /*----------------------*/
 /* Loadout Bar Styling */
 /*--------------------*/
-
 .loadoutBar {
   grid-column: 1 / 13;
   grid-row: 1 / 2;
 }
 
+/*-------------------*/
+/* Cast Bar Styling */
+/*-----------------*/
+.castButton {
+  grid-column: 6 / 8;
+  grid-row: 7 / 8;
+  z-index: 1;
+}

@@ -1,5 +1,5 @@
 
-import styles from '../styles/map_modal.module.css'
+    import styles from '../styles/Map_modal.module.css'
 
 export const MapModal = (props) => {
     if (!props.show) {
@@ -9,7 +9,7 @@ export const MapModal = (props) => {
     return (
         <div>
             <section className={styles.mapModalContainer} onClick={props.onClose}>
-                <div className={styles.modalContent} onClick={event => event.stopPropagation()}>
+                <div className={styles.mapModalContent} onClick={event => event.stopPropagation()}>
                     <div>
                        <p>side Nav</p>
                     </div>

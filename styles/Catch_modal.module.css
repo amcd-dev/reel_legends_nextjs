@@ -1,0 +1,34 @@
+.catchModalContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    background-color: var(--background-modal);
+}
+
+.catchModalContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    width: 12rem;
+    background-color: var(--background-primary);
+    z-index: 2;
+    font-family: var(--content-font);
+    text-align: center;
+
+}
+
+.rarity {
+    border-radius: 2rem;
+    margin: 0 auto;
+    padding: 0.15rem 0.8rem 0.25rem 1rem;
+    width: min-content;
+    background-color: #444444;
+}

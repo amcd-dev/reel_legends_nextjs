@@ -1,0 +1,43 @@
+
+.logContainer ul {
+    /*border: #C5FF49 solid 1px;*/
+}
+
+.logContainer li {
+    /*border: #60B2FF solid 1px;*/
+    list-style: none;
+}
+
+.logContainer {
+    grid-row: 9 / 13;
+    grid-column: 1 / 13;
+    z-index: 1;
+    color: var(--color-white);
+    background-color: var(--color-black);
+    font-family: var(--content-font);
+    overflow: scroll;
+}
+
+.common {
+    color: var(--color-common);
+}
+
+.uncommon {
+    color: var(--color-uncommon);
+}
+
+.rare {
+    color: var(--color-rare);
+}
+
+.exceptional {
+    color: var(--color-exceptional);
+}
+
+.legendary {
+    color: var(--color-legendary);
+}
+
+.mythical {
+    color: var(--color-mythical);
+}
