@@ -8,8 +8,9 @@ import {MapModal} from "../components/map_modal";
 import {Log} from "./log"
 import {Environment} from "./environment";
 import {CatchModal} from "../components/catch_modal";
+import {LoadoutBar} from "../components/loadout_bar";
 
-//Global Variables
+//Global Functions
 
 
 //API Calls
@@ -25,10 +26,15 @@ let apiPath = () => {
 export default function Home() {
     const [latestFish, setLatestFish] = useState({})
     const [playerState, setPlayerState] = useState({})
+    const [playerLoadoutState, setPlayerLoadoutState] = useState({})
+    const [playerLoadoutExpandedState, setPlayerLoadoutExpandedState] = useState([{},{},{}])
     const [loggedEvents, setLoggedEvents] = useState([])
+
     // console.log('>>> [Page render or update] Logging latestFish state', latestFish)
     // console.log('>>> [Page render or update] Logging loggedEvents array', loggedEvents)
     // console.log('>>> [Page render or update] Logging playerState state', playerState)
+    // console.log('>>> [Page render or update] Logging playerLoadoutState state', playerLoadoutState)
+    // console.log('>>> [Page render or update] Logging playerLoadoutExpandedState state', playerLoadoutExpandedState)
 
     {/* Modal States */}
     const [showMap, setShowMap] = useState(false);
@@ -36,14 +42,43 @@ export default function Home() {
 
     {/* Functions */}
     async function handleCastClick () {
-        console.log('>>> [1] initialising handleCastClick & starting getFish fetch')
+        // console.log('>>> [1] initialising handleCastClick & starting getFish fetch')
         const response = await fetch(`${apiPath()}/getFish`)
         const newFish = await response.json()
-        console.log('>>> [2] setting states for loggedEvents and latestFish')
+        // console.log('>>> [2] setting states for loggedEvents and latestFish')
         setLoggedEvents(current => [...current, newFish])
         setLatestFish(newFish)
         setShowCatch(true)
     }
+
+    // async function getPlayerState() {
+    //     console.log('>>> [1] initialising getPlayerState and starting playerState fetch')
+    //     const response = await fetch(`${apiPath()}/getPlayerState`)
+    //     const newState = await response.json()
+    //     console.log('>>> [2] setting states for playerState')
+    //     setPlayerState(newState)
+    // }
+
+    // async function getPlayerLoadout() {
+    //     console.log('>>> [1] initialising getPlayerLoadout and starting loadout fetch')
+    //     const response = await fetch(`${apiPath()}/getLoadoutState/1`) //TODO make dynamic for '1' to ID
+    //     const newState = await response.json()
+    //     console.log('>>> [2] setting states for playerLoadout')
+    //     setPlayerLoadoutState(newState)
+    // }
+
+    async function getPlayerLoadoutExpanded() {
+        // console.log('>>> [1] initialising getPlayerLoadout and starting loadout fetch')
+        const response = await fetch(`${apiPath()}/getLoadoutStateExpanded`) //TODO make dynamic for '1' to ID
+        const newState = await response.json()
+        // console.log('>>> [2] setting states for playerLoadout')
+        setPlayerLoadoutExpandedState(newState)
+    }
+
+    {/* useEffects */}
+    useEffect(() => {
+        getPlayerLoadoutExpanded()
+    }, [latestFish])
 
     return (
         <div className={styles.container}>
@@ -69,6 +104,7 @@ export default function Home() {
                     <button>Stats</button>
                     <button>Guide</button>
                 </section>
+                <LoadoutBar loadout={playerLoadoutExpandedState} />
                 {/* ----- Game Grid ----- */}
                 <section className={styles.gameGrid}>
                     <section className={styles.loadoutBar}>

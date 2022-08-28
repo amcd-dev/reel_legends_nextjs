@@ -52,6 +52,7 @@
 .loadoutBar {
   grid-column: 1 / 13;
   grid-row: 1 / 2;
+  z-index: 1;
 }
 
 /*-------------------*/
