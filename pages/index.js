@@ -15,7 +15,7 @@ import {LoadoutBar} from "../components/loadout_bar";
 
 //API Calls
 //TODO move to another module & import
-let apiPath = () => {
+export let apiPath = () => {
     if (location.hostname === 'localhost') {
         return 'http://127.0.0.1:3001';
     } else {
@@ -24,17 +24,16 @@ let apiPath = () => {
 }
 
 export default function Home() {
+
     const [latestFish, setLatestFish] = useState({})
     const [playerState, setPlayerState] = useState({})
-    const [playerLoadoutState, setPlayerLoadoutState] = useState({})
-    const [playerLoadoutExpandedState, setPlayerLoadoutExpandedState] = useState([{},{},{}])
+    const [inventoryState, setInventoryState] = useState([])
     const [loggedEvents, setLoggedEvents] = useState([])
 
     // console.log('>>> [Page render or update] Logging latestFish state', latestFish)
     // console.log('>>> [Page render or update] Logging loggedEvents array', loggedEvents)
     // console.log('>>> [Page render or update] Logging playerState state', playerState)
-    // console.log('>>> [Page render or update] Logging playerLoadoutState state', playerLoadoutState)
-    // console.log('>>> [Page render or update] Logging playerLoadoutExpandedState state', playerLoadoutExpandedState)
+    // console.log('>>> [Page render or update] Logging inventory state', inventoryState)
 
     {/* Modal States */}
     const [showMap, setShowMap] = useState(false);
@@ -59,25 +58,16 @@ export default function Home() {
     //     setPlayerState(newState)
     // }
 
-    // async function getPlayerLoadout() {
-    //     console.log('>>> [1] initialising getPlayerLoadout and starting loadout fetch')
-    //     const response = await fetch(`${apiPath()}/getLoadoutState/1`) //TODO make dynamic for '1' to ID
-    //     const newState = await response.json()
-    //     console.log('>>> [2] setting states for playerLoadout')
-    //     setPlayerLoadoutState(newState)
-    // }
-
-    async function getPlayerLoadoutExpanded() {
-        // console.log('>>> [1] initialising getPlayerLoadout and starting loadout fetch')
-        const response = await fetch(`${apiPath()}/getLoadoutStateExpanded`) //TODO make dynamic for '1' to ID
+    async function getInventory() {
+        const response = await fetch(`${apiPath()}/getPlayerInventory/1`) //TODO make dynamic for '1' to ID
         const newState = await response.json()
-        // console.log('>>> [2] setting states for playerLoadout')
-        setPlayerLoadoutExpandedState(newState)
+        setInventoryState(newState)
     }
 
     {/* useEffects */}
     useEffect(() => {
-        getPlayerLoadoutExpanded()
+        console.log('>>> Main page useEffect ran')
+        getInventory()
     }, [latestFish])
 
     return (
@@ -104,7 +94,7 @@ export default function Home() {
                     <button>Stats</button>
                     <button>Guide</button>
                 </section>
-                <LoadoutBar loadout={playerLoadoutExpandedState} />
+                <LoadoutBar inventory={inventoryState}  />
                 {/* ----- Game Grid ----- */}
                 <section className={styles.gameGrid}>
                     <section className={styles.loadoutBar}>
@@ -113,8 +103,8 @@ export default function Home() {
                     <button className={styles.castButton} onClick={handleCastClick}>Cast</button>
                     <Log catchEvent={loggedEvents}/>
                     <Environment />
-                    <MapModal onClose={() => setShowMap(false)} show={showMap}  />
-                    <CatchModal latestCatch={latestFish} onClose={() => setShowCatch(false)} show={showCatch} />
+                    <MapModal show={showMap}  onClose={() => setShowMap(false)}  />
+                    <CatchModal show={showCatch} latestCatch={latestFish} onClose={() => setShowCatch(false)}  />
                 </section>
                 {/* ----- Game Grid ----- */}
             </main>

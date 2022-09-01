@@ -20,3 +20,7 @@
 .buttonContainer {
 
 }
+
+.itemSelect:hover {
+    background-color: #60B2FF;
+}

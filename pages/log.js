@@ -1,4 +1,4 @@
-import styles from '../styles/Log.module.css'
+import styles from '../styles/log.module.css'
 
 import {useState} from "react";
 

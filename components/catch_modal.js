@@ -1,4 +1,4 @@
-import styles from '../styles/Catch_modal.module.css'
+import styles from '../styles/catch_modal.module.css'
 import Image from 'next/image'
 import {renderQualityColour} from "../pages/log";
 

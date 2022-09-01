@@ -1,0 +1,36 @@
+.itemSelectContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    background-color: var(--background-modal);
+}
+
+.itemSelectContent {
+    display: flex;
+}
+
+.currentEquipped {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-primary);
+}
+
+.inventoryOptions {
+    display: flex;
+    background-color: var(--background-secondary);
+}
+
+.inventoryOptions button {
+
+}
+
+.inventoryItem {
+    display: flex;
+    flex-direction: column;
+}
