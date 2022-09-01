@@ -1,3 +1,13 @@
+//####### original start in package.json {
+//   "name": "rl_frontend_njs",
+//   "version": "0.1.0",
+//   "private": true,
+//   "scripts": {
+//     "dev": "next dev",
+//     "build": "next build",
+//     "start": "next start",
+//     "lint": "next lint"
+//   },
 import {useEffect, useState} from "react";
 import Head from 'next/head'
 import Image from 'next/image'
