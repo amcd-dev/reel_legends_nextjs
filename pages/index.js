@@ -5,8 +5,8 @@ import styles from '../styles/Home.module.css'
 
 //TODO component imports, combine into one import
 import {MapModal} from "../components/map_modal";
-import {Log} from "./log"
-import {Environment} from "./environment";
+import {Log} from "../components/log"
+import {Environment} from "../components/environment";
 import {CatchModal} from "../components/catch_modal";
 import {LoadoutBar} from "../components/loadout_bar";
 

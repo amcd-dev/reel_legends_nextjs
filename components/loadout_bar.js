@@ -13,8 +13,6 @@ export const LoadoutBar = (props) => {
     const [showReel, setShowReel] = useState(false)
     const [showHook, setShowHook] = useState(false)
 
-    console.log(loadout)
-
     async function getPlayerLoadoutExpanded() {
         // console.log('>>> [1] initialising getPlayerLoadout and starting loadout fetch')
         const response = await fetch(`${apiPath()}/getLoadoutStateExpanded`) //TODO make dynamic for '1' to ID
