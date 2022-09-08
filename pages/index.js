@@ -21,7 +21,24 @@ import {CatchModal} from "../components/catch_modal";
 import {LoadoutBar} from "../components/loadout_bar";
 
 //Global Functions
-
+function renderQualityColour(caughtQuality) {
+    switch (caughtQuality) {
+        case 'Common':
+            return styles.common;
+        case 'Uncommon':
+            return styles.uncommon;
+        case 'Rare':
+            return styles.rare;
+        case 'Exceptional':
+            return styles.exceptional;
+        case 'Legendary':
+            return styles.legendary;
+        case 'Mythical':
+            return styles.mythical;
+        case 'Ancient':
+            return styles.ancient;
+    }
+}
 
 //API Calls
 //TODO move to another module & import
@@ -39,11 +56,13 @@ export default function Home() {
     const [playerState, setPlayerState] = useState({})
     const [inventoryState, setInventoryState] = useState([])
     const [loggedEvents, setLoggedEvents] = useState([])
+    const [releaseLog, setReleaseLog] = useState([])
 
-    // console.log('>>> [Page render or update] Logging latestFish state', latestFish)
-    // console.log('>>> [Page render or update] Logging loggedEvents array', loggedEvents)
-    // console.log('>>> [Page render or update] Logging playerState state', playerState)
-    // console.log('>>> [Page render or update] Logging inventory state', inventoryState)
+    // console.log('>>> [Page render] Logging latestFish state', latestFish)
+    // console.log('>>> [Page render] Logging loggedEvents array', loggedEvents)
+    // console.log('>>> [Page render] Logging playerState state', playerState)
+    // console.log('>>> [Page render] Logging inventory state', inventoryState)
+    // console.log('>>> [Page render] Logging Release Event Log', releaseLog)
 
     {/* Modal States */}
     const [showMap, setShowMap] = useState(false);
@@ -55,9 +74,31 @@ export default function Home() {
         const response = await fetch(`${apiPath()}/getFish`)
         const newFish = await response.json()
         // console.log('>>> [2] setting states for loggedEvents and latestFish')
-        setLoggedEvents(current => [...current, newFish])
+        // setLoggedEvents(current => [...current, newFish])
+        handleCatchLog(newFish)
         setLatestFish(newFish)
         setShowCatch(true)
+    }
+
+    function handleReleaseLog (fishDetails) {
+        const releaseText = `#release# You decide to instead release the ${fishDetails.caught_weight_lbs}lb ${fishDetails.caught_name}`
+        setReleaseLog(current => [...current, releaseText])
+    }
+
+    function handleCatchLog (fishDetails) {
+        const catchText = [
+            '#cast# you caught ',
+            fishDetails.caught_quality.charAt(0) === 'U' || fishDetails.caught_quality.charAt(0) === 'E' ? 'an ' : 'a ',
+            <span key={fishDetails.id} className={renderQualityColour(fishDetails.caught_quality)}>{fishDetails.caught_quality}</span>,
+            ' [',
+            fishDetails.caught_name,
+            '] ',
+            'weighing ',
+            fishDetails.caught_weight_lbs,
+            'lbs'
+        ]
+
+        setReleaseLog(current => [...current, catchText])
     }
 
     // async function getPlayerState() {
@@ -76,7 +117,7 @@ export default function Home() {
 
     {/* useEffects */}
     useEffect(() => {
-        console.log('>>> Main page useEffect ran')
+        // console.log('>>> Main page useEffect ran')
         getInventory()
     }, [latestFish])
 
@@ -104,19 +145,24 @@ export default function Home() {
                     <button>Stats</button>
                     <button>Guide</button>
                 </section>
-                <LoadoutBar inventory={inventoryState}  />
-                {/* ----- Game Grid ----- */}
+                <LoadoutBar className={styles.loadoutBar} inventory={inventoryState}  />
+                {/* ----- Game Grid Start ----- */}
                 <section className={styles.gameGrid}>
-                    <section className={styles.loadoutBar}>
-                        <h1>loadout placeholder</h1>
-                    </section>
                     <button className={styles.castButton} onClick={handleCastClick}>Cast</button>
-                    <Log catchEvent={loggedEvents}/>
+                    <Log catchEvent={loggedEvents}
+                         releaseEvent={releaseLog}
+                    />
                     <Environment />
-                    <MapModal show={showMap}  onClose={() => setShowMap(false)}  />
-                    <CatchModal show={showCatch} latestCatch={latestFish} onClose={() => setShowCatch(false)}  />
+                    <MapModal show={showMap}
+                              onClose={() => setShowMap(false)}
+                    />
+                    <CatchModal show={showCatch}
+                                latestCatch={latestFish}
+                                releaseEvent={() => handleReleaseLog(latestFish)}
+                                onClose={() => setShowCatch(false)}
+                    />
                 </section>
-                {/* ----- Game Grid ----- */}
+                {/* ----- Game Grid End ----- */}
             </main>
 
             <footer className={styles.footer}>

@@ -29,15 +29,9 @@ export const Log = (props) => {
         <div className={styles.logContainer}>
             <p>--- Event Log ---</p>
             <ul>
-                {props.catchEvent.map(fish => {
+                {props.releaseEvent.map((event, i) => {
                     return (
-                        <li key={fish.id}>
-                            {'#cast# You caught '}
-                            {fish.caught_quality.charAt(0) === 'U' || fish.caught_quality.charAt(0) === 'E' ? 'an ' : 'a '}
-                            <span className={renderQualityColour(fish.caught_quality)}> {fish.caught_quality} </span>
-                            [{fish.caught_name}]{' weighing '}
-                            {fish.caught_weight_lbs}{'lbs'}
-                        </li>
+                        <li key={'releaseId_'+ i}>{event}</li>
                     )
                 })}
             </ul>

@@ -12,22 +12,35 @@
 }
 
 .itemSelectContent {
+    border-radius: 2rem;
     display: flex;
+    padding: 2rem;
+    background-color: var(--background-secondary);
 }
 
 .currentEquipped {
+    border: #444444 solid 1px;
+    border-radius: 1rem;
     display: flex;
     flex-direction: column;
     background-color: var(--background-primary);
+    transform: scale(150%);
 }
 
 .inventoryOptions {
     display: flex;
+    margin-left: 1.5rem;
     background-color: var(--background-secondary);
 }
 
 .inventoryOptions button {
+    border: #444444 solid 1px;
+    border-radius: 0.5rem;
+    background-color: var(--background-primary);
+}
 
+.inventoryOptions button:hover {
+    background-color: #b0d5ff;
 }
 
 .inventoryItem {

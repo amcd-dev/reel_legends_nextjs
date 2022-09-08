@@ -46,15 +46,6 @@
 
 }
 
-/*----------------------*/
-/* Loadout Bar Styling */
-/*--------------------*/
-.loadoutBar {
-  grid-column: 1 / 13;
-  grid-row: 1 / 2;
-  z-index: 1;
-}
-
 /*-------------------*/
 /* Cast Bar Styling */
 /*-----------------*/
@@ -62,4 +53,35 @@
   grid-column: 6 / 8;
   grid-row: 7 / 8;
   z-index: 1;
+}
+
+/*-------------------*/
+/* Rarity colours */
+/*-----------------*/
+.common {
+  color: var(--color-common);
+}
+
+.uncommon {
+  color: var(--color-uncommon);
+}
+
+.rare {
+  color: var(--color-rare);
+}
+
+.exceptional {
+  color: var(--color-exceptional);
+}
+
+.legendary {
+  color: var(--color-legendary);
+}
+
+.mythical {
+  color: var(--color-mythical);
+}
+
+.ancient {
+  color: var(--color-ancient)
 }

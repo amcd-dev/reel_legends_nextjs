@@ -13,8 +13,6 @@ export const ItemSelect = (props) => {
     const itemUpdate = async (playerId,itemId,itemType) => {
         const requestOptions = {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' }
-            // body: JSON.stringify({ title: 'React PUT Request Example' })
         };
         const response = await fetch(`${apiPath()}/itemUpdate/${playerId}?itemId=${itemId}&itemType=${itemType}`, requestOptions)
         const message = await response.json() //TODO update to try-catch
@@ -41,7 +39,10 @@ export const ItemSelect = (props) => {
                         //Below IF renders inventory options for the specific slot only & ignoring current equipped
                         if (props.itemType === item.item_type && item.item_id !== props.currentItem.id) {
                             return (
-                                <button key={item.id} onClick={() => itemUpdate(1, item.item_id, item.item_type)} onMouseUp={props.trigger}>
+                                <button key={item.id}
+                                        onClick={() => itemUpdate(1, item.item_id, item.item_type)}
+                                        onMouseUp={props.trigger}
+                                >
                                     <div key={item.id} className={styles.inventoryItem}>
                                         <Image
                                             src={item ? item.item_imgsrc : '/loading.png'}

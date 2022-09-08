@@ -16,7 +16,7 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   --accent-primary: lime;
   --background-primary: #F2DAA7;
-  --background-secondary: #494745;
+  --background-secondary: #998A6A;
   --background-modal: rgba(0,0,0,0.5);
   --color-black: #272727;
   --color-white: white;
@@ -29,6 +29,7 @@ body {
   --color-exceptional: #FF9C07FF;
   --color-legendary: #FFE600;
   --color-mythical: #8F00FF;
+  --color-ancient: #00fff9;
 }
 
 * {

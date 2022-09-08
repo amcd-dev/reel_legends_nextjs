@@ -4,7 +4,7 @@
     flex-direction: column;
     align-items: center;
     margin: 0 auto;
-    background-color: var(--background-primary);
+
 }
 
 .slotContainer {
@@ -12,15 +12,33 @@
 }
 
 .slot {
+    border: var(--background-secondary) solid 2px;
+    border-radius: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 0.5rem;
+    padding: 0.5rem 0.5rem 0.25rem 0.5rem;
+    background-color: var(--background-primary);
 }
 
-.buttonContainer {
+.itemButton {
+    border: var(--background-secondary) solid 2px;
+    border-radius: 1rem;
+}
+
+.itemButton:hover {
+    background-color: #b0d5ff;
+    transform: scale(150%);
+}
+
+.slotName {
 
 }
 
-.itemSelect:hover {
-    background-color: #60B2FF;
+.itemName {
+    border-radius: 1rem;
+    padding: 0.1rem 0.5rem 0.2rem 0.5rem;
+    margin: 0.4rem 0;
+    color: black;
 }

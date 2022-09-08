@@ -1,12 +1,25 @@
 import styles from '../styles/catch_modal.module.css'
 import Image from 'next/image'
 import {renderQualityColour} from "./log";
+import {apiPath} from "../pages";
 
 export const CatchModal = (props) => {
     // console.log('>>> [CatchModal] Logging props.latestCatch', props.latestCatch)
     if (!props.show) {
         return null
     }
+
+    const handleRelease = async (fishId) => {
+        console.log('Removing last caught fish from player_aquarium')
+        await fetch(`${apiPath()}/releaseFish/${fishId}`,{
+            method: 'DELETE'
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+        props.onClose()
+        props.releaseEvent()
+    }
+
     return (
         <div>
             <section className={styles.catchModalContainer} onClick={props.onClose}>
@@ -28,7 +41,7 @@ export const CatchModal = (props) => {
                         layout="intrinsic"
                         unoptimized={true}
                     />
-                    <button>Release Fish?</button>
+                    <button onClick={() => {handleRelease(props.latestCatch.id)}}>Release Fish?</button>
                 </div>
             </section>
         </div>

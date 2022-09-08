@@ -41,3 +41,7 @@
 .mythical {
     color: var(--color-mythical);
 }
+
+.ancient {
+    color: var(--color-ancient)
+}
