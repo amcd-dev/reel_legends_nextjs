@@ -22,7 +22,7 @@ export const LoadoutBar = (props) => {
         const response = await fetch(`${apiPath()}/getLoadoutStateExpanded`) //TODO make dynamic for '1' to ID
         const newState = await response.json()
         // console.log('>>> [2] setting states for playerLoadout')
-        setLoadout(newState)
+        await setLoadout(newState)
     }
 
     useEffect(() => { //First load fetches
