@@ -19,6 +19,7 @@ import {Log} from "../components/log"
 import {Environment} from "../components/environment";
 import {CatchModal} from "../components/catch_modal";
 import {LoadoutBar} from "../components/loadout_bar";
+import {QuestsModal} from "../components/quests_modal";
 
 //Global Functions
 function renderQualityColour(caughtQuality) {
@@ -51,10 +52,12 @@ export let apiPath = () => {
 }
 
 export default function Home() {
+    const [trigger, setTrigger] = useState([])
 
     const [latestFish, setLatestFish] = useState({})
     const [playerState, setPlayerState] = useState({})
     const [inventoryState, setInventoryState] = useState([])
+    const [questState, setQuestState] = useState([])
     const [loggedEvents, setLoggedEvents] = useState([])
     const [releaseLog, setReleaseLog] = useState([])
 
@@ -62,11 +65,13 @@ export default function Home() {
     // console.log('>>> [Page render] Logging loggedEvents array', loggedEvents)
     // console.log('>>> [Page render] Logging playerState state', playerState)
     // console.log('>>> [Page render] Logging inventory state', inventoryState)
+    console.log('>>> [Page render] Logging quest state', questState)
     // console.log('>>> [Page render] Logging Release Event Log', releaseLog)
 
     {/* Modal States */}
     const [showMap, setShowMap] = useState(false);
     const [showCatch, setShowCatch] = useState(false)
+    const [showQuests, setShowQuests] = useState(false)
 
     {/* Functions */}
     async function handleCastClick () {
@@ -78,6 +83,7 @@ export default function Home() {
         handleCatchLog(newFish)
         setLatestFish(newFish)
         setShowCatch(true)
+        setTrigger(current => [...current, 1])
     }
 
     function handleReleaseLog (fishDetails) {
@@ -110,16 +116,23 @@ export default function Home() {
     // }
 
     async function getInventory() {
-        const response = await fetch(`${apiPath()}/getPlayerInventory/1`) //TODO make dynamic for '1' to ID
-        const newState = await response.json()
-        setInventoryState(newState)
+        const response = await fetch(`${apiPath()}/getPlayerInventory/1`); //TODO make dynamic for '1' to ID
+        const newState = await response.json();
+        setInventoryState(newState);
+    }
+
+    async function getQuestUpdate() {
+        const response = await fetch(`${apiPath()}/getQuests/1`); //TODO make dynamic for '1' to ID
+        const newState = await response.json();
+        setQuestState(newState);
     }
 
     {/* useEffects */}
     useEffect(() => {
         // console.log('>>> Main page useEffect ran')
-        getInventory()
-    }, [latestFish])
+        getInventory();
+        getQuestUpdate()
+    }, [latestFish]);
 
     return (
         <div className={styles.container}>
@@ -140,7 +153,7 @@ export default function Home() {
                     <button>Player</button>
                     <button>Inventory</button>
                     <button>Shop</button>
-                    <button>Quests</button>
+                    <button onClick={() => setShowQuests(true)}>Quests</button>
                     <button>Achievements</button>
                     <button>Stats</button>
                     <button>Guide</button>
@@ -155,6 +168,11 @@ export default function Home() {
                     <Environment />
                     <MapModal show={showMap}
                               onClose={() => setShowMap(false)}
+                    />
+                    <QuestsModal show={showQuests}
+                                 currentQuests={questState}
+                                 onClose={() => setShowQuests(false)}
+                                 forceUpdate={trigger}
                     />
                     <CatchModal show={showCatch}
                                 latestCatch={latestFish}

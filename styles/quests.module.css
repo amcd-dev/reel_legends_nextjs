@@ -1,0 +1,43 @@
+.questsModalContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    background-color: var(--background-modal);
+}
+.questsModalContainer li {
+    list-style: none;
+}
+
+.questsModalContent {
+    display: flex;
+    padding: 2rem;
+    min-width: 30vw;
+    max-width: 80vw;
+    background-color: var(--background-secondary);
+    z-index: 2;
+}
+
+.sideNavContainer {
+    border: #8F00FF solid 1px;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem;
+    background-color: var(--background-primary);
+}
+
+.mainQuestContent {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem;
+    background-color: var(--background-primary);
+}
+
+.questReqs {
+    border: solid 1px var(--background-secondary);
+}

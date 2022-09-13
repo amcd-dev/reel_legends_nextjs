@@ -12,8 +12,8 @@
 }
 html,
 body {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: var(--content-font);
+  font-size: 0.95rem;
   --accent-primary: lime;
   --background-primary: #F2DAA7;
   --background-secondary: #998A6A;
