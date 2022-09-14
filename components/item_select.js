@@ -16,7 +16,9 @@ export const ItemSelect = (props) => {
         };
         const response = await fetch(`${apiPath()}/itemUpdate/${playerId}?itemId=${itemId}&itemType=${itemType}`, requestOptions)
         const message = await response.json() //TODO update to try-catch
+        await props.trigger()
         props.onClose()
+
     }
 
     return (
@@ -41,7 +43,7 @@ export const ItemSelect = (props) => {
                             return (
                                 <button key={item.id}
                                         onClick={() => itemUpdate(1, item.item_id, item.item_type)}
-                                        onMouseUp={props.trigger}
+                                        // onMouseUp={props.trigger}
                                 >
                                     <div key={item.id} className={styles.inventoryItem}>
                                         <Image
