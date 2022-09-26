@@ -1,5 +1,5 @@
 import styles from '../styles/item_select.module.css'
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Image from 'next/image'
 import {apiPath} from "../pages";
 
@@ -43,7 +43,6 @@ export const ItemSelect = (props) => {
                             return (
                                 <button key={item.id}
                                         onClick={() => itemUpdate(1, item.item_id, item.item_type)}
-                                        // onMouseUp={props.trigger}
                                 >
                                     <div key={item.id} className={styles.inventoryItem}>
                                         <Image

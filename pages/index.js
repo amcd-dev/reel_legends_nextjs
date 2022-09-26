@@ -1,13 +1,4 @@
-//####### original start in package.json {
-//   "name": "rl_frontend_njs",
-//   "version": "0.1.0",
-//   "private": true,
-//   "scripts": {
-//     "dev": "next dev",
-//     "build": "next build",
-//     "start": "next start",
-//     "lint": "next lint"
-//   },
+
 import {useEffect, useState} from "react";
 import Head from 'next/head'
 import Image from 'next/image'
@@ -57,29 +48,39 @@ export default function Home() {
     const [latestFish, setLatestFish] = useState({})
     const [playerState, setPlayerState] = useState({})
     const [inventoryState, setInventoryState] = useState([])
-    const [questState, setQuestState] = useState([])
+    const [unlockedLocations, setUnblockedLocations] = useState()
+    // console.log('>>> [Page render] Logging unlocked locations state', unlockedLocations)
+    console.log('>>> [Page render] Logging playerState state', playerState)
+
     const [loggedEvents, setLoggedEvents] = useState([])
     const [releaseLog, setReleaseLog] = useState([])
 
+    //quest states
+    const [questState, setQuestState] = useState([]) //player quest list
+    const [selectedQuest, setSelectedQuest] = useState() //current selected quest
+    const [selectedQuestReqs, setSelectedQuestReqs] = useState([]) //selected quest requirements for tracking
+
     // console.log('>>> [Page render] Logging latestFish state', latestFish)
     // console.log('>>> [Page render] Logging loggedEvents array', loggedEvents)
-    // console.log('>>> [Page render] Logging playerState state', playerState)
     // console.log('>>> [Page render] Logging inventory state', inventoryState)
-    console.log('>>> [Page render] Logging quest state', questState)
+    // console.log('>>> [Page render] Logging quest state', questState)
+    // console.log('>>> [Page render] Logging selected quest state', selectedQuest)
+    // console.log('>>> [Page render] Logging selected quest reqs state', selectedQuestReqs)
     // console.log('>>> [Page render] Logging Release Event Log', releaseLog)
 
-    {/* Modal States */}
+    /* Modal States */
     const [showMap, setShowMap] = useState(false);
     const [showCatch, setShowCatch] = useState(false)
     const [showQuests, setShowQuests] = useState(false)
 
-    {/* Functions */}
+    /* Functions */ //TODO move all functions to own modules
     async function handleCastClick () {
         // console.log('>>> [1] initialising handleCastClick & starting getFish fetch')
         const response = await fetch(`${apiPath()}/getFish`)
         const newFish = await response.json()
         // console.log('>>> [2] setting states for loggedEvents and latestFish')
         // setLoggedEvents(current => [...current, newFish])
+
         handleCatchLog(newFish)
         setLatestFish(newFish)
         setShowCatch(true)
@@ -107,13 +108,35 @@ export default function Home() {
         setReleaseLog(current => [...current, catchText])
     }
 
-    // async function getPlayerState() {
-    //     console.log('>>> [1] initialising getPlayerState and starting playerState fetch')
-    //     const response = await fetch(`${apiPath()}/getPlayerState`)
-    //     const newState = await response.json()
-    //     console.log('>>> [2] setting states for playerState')
-    //     setPlayerState(newState)
-    // }
+    async function handlePickLocation (playerUid, newLocationName) {
+        console.log('>>> Initiating location change')
+        console.log('>>> with playerUid: ', playerUid, '>>> with newLocationName: ', newLocationName)
+        const reqOptions = {
+            method: 'PUT'
+        };
+        const response = await fetch(`${apiPath()}/locationUpdate/${playerUid}?newLocationName=${newLocationName}`, reqOptions)
+        const message = await response.json() //TODO update to try-catch
+        //TODO PUT works in postman, now to implement button click in map modal
+    }
+
+    function pickQuest (questData) {
+        console.log('>>> Logging questData: ', questData)
+        setSelectedQuest(questData)
+        getPlayerQuestReqs(1,questData.quest_id);
+    }
+
+    /* Data Fetches */
+    async function getPlayerData() {
+        const response = await fetch(`${apiPath()}/getPlayerData/abc`)
+        const newState = await response.json();
+        setPlayerState(newState)
+    }
+
+    async function getUnlockedLocations() {
+        const response = await fetch(`${apiPath()}/getPlayerUnlockedLocations/1`)
+        const newState = await response.json();
+        setUnblockedLocations(newState)
+    }
 
     async function getInventory() {
         const response = await fetch(`${apiPath()}/getPlayerInventory/1`); //TODO make dynamic for '1' to ID
@@ -127,12 +150,26 @@ export default function Home() {
         setQuestState(newState);
     }
 
-    {/* useEffects */}
+    async function getPlayerQuestReqs (playerId, questId) {
+        const response = await fetch(`${apiPath()}/getPlayerQuestReqs/${playerId}/${questId}`); //TODO make dynamic for '1' to ID
+        const newState = await response.json();
+        setSelectedQuestReqs(newState)
+    }
+
+    /* useEffects */
     useEffect(() => {
-        // console.log('>>> Main page useEffect ran')
+        getPlayerData()
         getInventory();
         getQuestUpdate()
+        if (selectedQuest) { //if a quest is selected, fetch the latest quest reqs state
+            getPlayerQuestReqs(1, selectedQuest.quest_id)
+        }
     }, [latestFish]);
+
+    useEffect(() => { //for on load only fetches
+        //TODO add player current location
+        getUnlockedLocations()
+    }, [])
 
     return (
         <div className={styles.container}>
@@ -167,12 +204,17 @@ export default function Home() {
                     />
                     <Environment />
                     <MapModal show={showMap}
+                              unlockedLocations={unlockedLocations}
+                              changeLocation={(playerUid, newLocation) => handlePickLocation(playerUid, newLocation)}
                               onClose={() => setShowMap(false)}
                     />
                     <QuestsModal show={showQuests}
                                  currentQuests={questState}
                                  onClose={() => setShowQuests(false)}
                                  forceUpdate={trigger}
+                                 pickQuest={(questData) => pickQuest(questData)}
+                                 selectedQuest={selectedQuest}
+                                 selectedQuestReqs={selectedQuestReqs}
                     />
                     <CatchModal show={showCatch}
                                 latestCatch={latestFish}

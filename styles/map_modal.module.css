@@ -16,3 +16,11 @@
     background-color: var(--background-primary);
     z-index: 2;
 }
+
+.sideNavContainer {
+    /*border: #8F00FF solid 1px;*/
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem;
+    background-color: var(--background-primary);
+}
