@@ -115,8 +115,9 @@ export default function Home() {
             method: 'PUT'
         };
         const response = await fetch(`${apiPath()}/locationUpdate/${playerUid}?newLocationName=${newLocationName}`, reqOptions)
-        const message = await response.json() //TODO update to try-catch
-        //TODO PUT works in postman, now to implement button click in map modal
+        const message = await response.json() //TODO update the environment location using the response, not player data?
+
+        await getPlayerData() //fetches the latest player state for updated location
     }
 
     function pickQuest (questData) {
@@ -139,19 +140,19 @@ export default function Home() {
     }
 
     async function getInventory() {
-        const response = await fetch(`${apiPath()}/getPlayerInventory/1`); //TODO make dynamic for '1' to ID
+        const response = await fetch(`${apiPath()}/getPlayerInventory/1`);
         const newState = await response.json();
         setInventoryState(newState);
     }
 
     async function getQuestUpdate() {
-        const response = await fetch(`${apiPath()}/getQuests/1`); //TODO make dynamic for '1' to ID
+        const response = await fetch(`${apiPath()}/getQuests/1`);
         const newState = await response.json();
         setQuestState(newState);
     }
 
     async function getPlayerQuestReqs (playerId, questId) {
-        const response = await fetch(`${apiPath()}/getPlayerQuestReqs/${playerId}/${questId}`); //TODO make dynamic for '1' to ID
+        const response = await fetch(`${apiPath()}/getPlayerQuestReqs/${playerId}/${questId}`);
         const newState = await response.json();
         setSelectedQuestReqs(newState)
     }
@@ -187,13 +188,13 @@ export default function Home() {
             <main className={styles.main}>
                 <section className={styles.menuBar}>
                     <button onClick={() => setShowMap(true)}>Map</button>
-                    <button>Player</button>
-                    <button>Inventory</button>
-                    <button>Shop</button>
+                    {/*<button>Player</button>*/}
+                    {/*<button>Inventory</button>*/}
+                    {/*<button>Shop</button>*/}
                     <button onClick={() => setShowQuests(true)}>Quests</button>
-                    <button>Achievements</button>
-                    <button>Stats</button>
-                    <button>Guide</button>
+                    {/*<button>Achievements</button>*/}
+                    {/*<button>Stats</button>*/}
+                    {/*<button>Guide</button>*/}
                 </section>
                 <LoadoutBar className={styles.loadoutBar} inventory={inventoryState}  />
                 {/* ----- Game Grid Start ----- */}
@@ -202,8 +203,11 @@ export default function Home() {
                     <Log catchEvent={loggedEvents}
                          releaseEvent={releaseLog}
                     />
-                    <Environment />
+                    <Environment
+                        currentEnvironment={playerState}
+                    />
                     <MapModal show={showMap}
+                              playerUid={playerState}
                               unlockedLocations={unlockedLocations}
                               changeLocation={(playerUid, newLocation) => handlePickLocation(playerUid, newLocation)}
                               onClose={() => setShowMap(false)}
@@ -230,3 +234,6 @@ export default function Home() {
         </div>
     )
 }
+
+//TODO reduce the number of props on each component, e.g passing player UID down, do it through one prop, not adding extra props
+//TODO build auth & replace all fetching with player UID

@@ -23,7 +23,13 @@ export const MapModal = (props) => {
                             <ul>
                                 {props.unlockedLocations.map((unlockedLocation, i) => {
                                     return (
-                                        <li key={`unlockedLocationKey_`+ i}>{unlockedLocation.location_name}</li>
+                                        <li
+                                            key={`unlockedLocationKey_`+ i}
+                                            //Clicking selects the new location, and updates the player current location via API
+                                            onClick={() => {props.changeLocation(props.playerUid.player_uid,unlockedLocation.location_code)}}
+                                        >
+                                            {unlockedLocation.location_name}
+                                        </li>
                                     )
                                 })}
                             </ul>

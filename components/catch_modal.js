@@ -47,5 +47,3 @@ export const CatchModal = (props) => {
         </div>
     )
 }
-
-// '/yellowfin_bream_common.png'
