@@ -39,7 +39,7 @@ export const QuestsModal = (props) => {
                     {props.selectedQuest && //only loads this if there is a currently selected quest
                         <section className={styles.mainQuestContent}>
                             <h2>{props.selectedQuest.quest_title}</h2>
-                            <p>{props.selectedQuest.quest_desc}</p>t
+                            <p>{props.selectedQuest.quest_desc}</p>
                             <ul className={styles.questReqs}>
                                 {props.selectedQuestReqs.map((questRequirement, i) => {
                                     return (
