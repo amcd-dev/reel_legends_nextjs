@@ -2,9 +2,12 @@ import styles from '../styles/loadout_bar.module.css'
 import Image from 'next/image'
 import {useEffect, useState} from "react";
 import {ItemSelect} from "./item_select";
-import {apiPath} from "../pages";
+import {apiPath} from "../pages/dashboard";
+import {useAuth} from "../context/authContext";
 
 export const LoadoutBar = (props) => {
+
+    const { user } = useAuth()
 
     const [loadout, setLoadout] = useState([])
     //Modals
@@ -17,16 +20,16 @@ export const LoadoutBar = (props) => {
     const [showStorage, setShowStorage] = useState(false)
     const [showBoat, setShowBoat] = useState(false)
 
-    async function getPlayerLoadoutExpanded() {
+    async function getPlayerLoadoutExpanded(userUid) {
         // console.log('>>> [1] initialising getPlayerLoadout and starting loadout fetch')
-        const response = await fetch(`${apiPath()}/getLoadoutStateExpanded`) //TODO make dynamic for '1' to ID
+        const response = await fetch(`${apiPath()}/getLoadoutStateExpanded/${userUid}`) //TODO make dynamic for '1' to ID
         const newState = await response.json()
         // console.log('>>> [2] setting states for playerLoadout')
         await setLoadout(newState)
     }
 
     useEffect(() => { //First load fetches
-        getPlayerLoadoutExpanded()
+        getPlayerLoadoutExpanded(user.uid)
     }, [])
 
     return (
@@ -146,13 +149,13 @@ export const LoadoutBar = (props) => {
                 <button onClick={() => setShowBar(showBar ? false : true)}>Open / Close</button>
                 <button>?</button>
             </div>
-            <ItemSelect show={showRod} itemType={'rod'} currentItem={loadout[0]} inventoryOptions={props.inventory} trigger={() => {getPlayerLoadoutExpanded()}} onClose={() => setShowRod(false)}/>
-            <ItemSelect show={showReel} itemType={'reel'} currentItem={loadout[1]} inventoryOptions={props.inventory} trigger={() => {getPlayerLoadoutExpanded()}} onClose={() => setShowReel(false)}/>
-            <ItemSelect show={showHook} itemType={'hook'} currentItem={loadout[2]} inventoryOptions={props.inventory} trigger={() => {getPlayerLoadoutExpanded()}} onClose={() => setShowHook(false)}/>
-            <ItemSelect show={showBait} itemType={'bait'} currentItem={loadout[3]} inventoryOptions={props.inventory} trigger={() => {getPlayerLoadoutExpanded()}} onClose={() => setShowBait(false)}/>
-            <ItemSelect show={showSpecial} itemType={'special'} currentItem={loadout[4]} inventoryOptions={props.inventory} trigger={() => {getPlayerLoadoutExpanded()}} onClose={() => setShowSpecial(false)}/>
-            <ItemSelect show={showStorage} itemType={'storage'} currentItem={loadout[5]} inventoryOptions={props.inventory} trigger={() => {getPlayerLoadoutExpanded()}} onClose={() => setShowStorage(false)}/>
-            <ItemSelect show={showBoat} itemType={'boat'} currentItem={loadout[6]} inventoryOptions={props.inventory} trigger={() => {getPlayerLoadoutExpanded()}} onClose={() => setShowBoat(false)}/>
+            <ItemSelect show={showRod} itemType={'rod'} currentItem={loadout[0]} inventoryOptions={props.inventory} trigger={() => {getPlayerLoadoutExpanded(user.uid)}} onClose={() => setShowRod(false)}/>
+            <ItemSelect show={showReel} itemType={'reel'} currentItem={loadout[1]} inventoryOptions={props.inventory} trigger={() => {getPlayerLoadoutExpanded(user.uid)}} onClose={() => setShowReel(false)}/>
+            <ItemSelect show={showHook} itemType={'hook'} currentItem={loadout[2]} inventoryOptions={props.inventory} trigger={() => {getPlayerLoadoutExpanded(user.uid)}} onClose={() => setShowHook(false)}/>
+            <ItemSelect show={showBait} itemType={'bait'} currentItem={loadout[3]} inventoryOptions={props.inventory} trigger={() => {getPlayerLoadoutExpanded(user.uid)}} onClose={() => setShowBait(false)}/>
+            <ItemSelect show={showSpecial} itemType={'special'} currentItem={loadout[4]} inventoryOptions={props.inventory} trigger={() => {getPlayerLoadoutExpanded(user.uid)}} onClose={() => setShowSpecial(false)}/>
+            <ItemSelect show={showStorage} itemType={'storage'} currentItem={loadout[5]} inventoryOptions={props.inventory} trigger={() => {getPlayerLoadoutExpanded(user.uid)}} onClose={() => setShowStorage(false)}/>
+            <ItemSelect show={showBoat} itemType={'boat'} currentItem={loadout[6]} inventoryOptions={props.inventory} trigger={() => {getPlayerLoadoutExpanded(user.uid)}} onClose={() => setShowBoat(false)}/>
 
         </div>
     )

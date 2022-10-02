@@ -1,7 +1,7 @@
 import styles from '../styles/catch_modal.module.css'
 import Image from 'next/image'
 import {renderQualityColour} from "./log";
-import {apiPath} from "../pages";
+import {apiPath} from "../pages/dashboard";
 
 export const CatchModal = (props) => {
     // console.log('>>> [CatchModal] Logging props.latestCatch', props.latestCatch)

@@ -1,20 +1,23 @@
 import styles from '../styles/item_select.module.css'
 import {useEffect, useState} from "react";
 import Image from 'next/image'
-import {apiPath} from "../pages";
+import {apiPath} from "../pages/dashboard";
+import {useAuth} from "../context/authContext";
 
 
 export const ItemSelect = (props) => {
+
+    const { user } = useAuth()
 
     if (!props.show) {
         return null
     }
 
-    const itemUpdate = async (playerId,itemId,itemType) => {
+    const itemUpdate = async (playerUid,itemId,itemType) => {
         const requestOptions = {
             method: 'PUT',
         };
-        const response = await fetch(`${apiPath()}/itemUpdate/${playerId}?itemId=${itemId}&itemType=${itemType}`, requestOptions)
+        const response = await fetch(`${apiPath()}/itemUpdate/${playerUid}?itemId=${itemId}&itemType=${itemType}`, requestOptions)
         const message = await response.json() //TODO update to try-catch
         await props.trigger()
         props.onClose()
@@ -42,7 +45,7 @@ export const ItemSelect = (props) => {
                         if (props.itemType === item.item_type && item.item_id !== props.currentItem.id) {
                             return (
                                 <button key={item.id}
-                                        onClick={() => itemUpdate(1, item.item_id, item.item_type)}
+                                        onClick={() => itemUpdate(user.uid, item.item_id, item.item_type)}
                                 >
                                     <div key={item.id} className={styles.inventoryItem}>
                                         <Image

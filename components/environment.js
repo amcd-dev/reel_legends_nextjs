@@ -2,7 +2,7 @@ import styles from '../styles/environment.module.css'
 import Image from 'next/image'
 
 export const Environment = (props) => {
-    console.log('>>> current loc', props.currentEnvironment.current_location)
+    // console.log('>>> current loc', props.currentEnvironment.current_location)
     return (
         <div className={styles.environmentContainer}>
             <Image

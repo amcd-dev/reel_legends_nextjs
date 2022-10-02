@@ -1,6 +1,6 @@
 import styles from '../styles/quests.module.css'
 import {useEffect, useState} from "react";
-import {apiPath} from "../pages";
+import {apiPath} from "../pages/dashboard";
 
 export const QuestsModal = (props) => {
 
