@@ -85,3 +85,8 @@
 .ancient {
   color: var(--color-ancient)
 }
+
+/* Fish name styling */
+.caughtFishText {
+  color: var(--background-primary);
+}

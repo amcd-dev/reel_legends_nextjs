@@ -47,7 +47,7 @@ export default function Home() {
     const [trigger, setTrigger] = useState([])
 
     const { user } = useAuth()
-    console.log('>>> Logging user details: ', user)
+    // console.log('>>> Logging user details: ', user)
 
     const [latestFish, setLatestFish] = useState({})
     const [playerState, setPlayerState] = useState({})
@@ -82,13 +82,25 @@ export default function Home() {
         // console.log('>>> [1] initialising handleCastClick & starting getFish fetch')
         const response = await fetch(`${apiPath()}/getFish/${playerUid}`)
         const newFish = await response.json()
+        console.log('>>> Logging response from server', newFish)
         // console.log('>>> [2] setting states for loggedEvents and latestFish')
         // setLoggedEvents(current => [...current, newFish])
 
-        handleCatchLog(newFish)
-        setLatestFish(newFish)
-        setShowCatch(true)
-        setTrigger(current => [...current, 1])
+        if (newFish.hasOwnProperty('failedStrike')) {
+            console.log ('!!! No Strike !!!')
+            handleFailedStrike(newFish)
+
+        } else if (newFish.hasOwnProperty('failedFight')) {
+            console.log('!!! Failed fight !!!')
+            handleFailedFight(newFish)
+
+        } else {
+            console.log('^^^ Successful catch ^^^')
+            handleCatchLog(newFish)
+            setLatestFish(newFish)
+            setShowCatch(true)
+            setTrigger(current => [...current, 1])
+        }
     }
 
     function handleReleaseLog (fishDetails) {
@@ -96,14 +108,24 @@ export default function Home() {
         setReleaseLog(current => [...current, releaseText])
     }
 
+    function handleFailedFight (fishDetails) {
+        const failedFightText = `#failed catch# unfortunately after an epic struggle trying to reel it in, the fish pulled away hard and broke off your line. You guess it must have weighed about ${fishDetails.weight} lbs`
+        setReleaseLog(current => [...current, failedFightText])
+    }
+
+    function handleFailedStrike (fishDetails) {
+        const noStrikeText = `#failed catch# your luck must be lacking, you cast but unfortunately not even a nibble`
+        setReleaseLog(current => [...current, noStrikeText])
+    }
+
     function handleCatchLog (fishDetails) {
         const catchText = [
             '#cast# you caught ',
             fishDetails.caught_quality.charAt(0) === 'U' || fishDetails.caught_quality.charAt(0) === 'E' ? 'an ' : 'a ',
-            <span key={fishDetails.id} className={renderQualityColour(fishDetails.caught_quality)}>{fishDetails.caught_quality}</span>,
-            ' [',
-            fishDetails.caught_name,
-            '] ',
+            <span key={new Date().getTime() + 1} className={renderQualityColour(fishDetails.caught_quality)}>{fishDetails.caught_quality}</span>,
+            ' ',
+            <span key={new Date().getTime()} className={styles.caughtFishText}>{fishDetails.caught_name}</span>,
+            ' ',
             'weighing ',
             fishDetails.caught_weight_lbs,
             'lbs'
@@ -124,10 +146,10 @@ export default function Home() {
         await getPlayerData(playerUid) //fetches the latest player state for updated location
     }
 
-    function pickQuest (questData) {
+    function pickQuest (userUid, questData) {
         console.log('>>> Logging questData: ', questData)
         setSelectedQuest(questData)
-        getPlayerQuestReqs(1,questData.quest_id);
+        getPlayerQuestReqs(userUid,questData.quest_id);
     }
 
     /* Data Fetches */
@@ -172,7 +194,6 @@ export default function Home() {
     }, [latestFish]);
 
     useEffect(() => { //for on load only fetches
-        //TODO add player current location
         getUnlockedLocations(user.uid)
     }, [])
 
@@ -220,7 +241,7 @@ export default function Home() {
                                  currentQuests={questState}
                                  onClose={() => setShowQuests(false)}
                                  forceUpdate={trigger}
-                                 pickQuest={(questData) => pickQuest(questData)}
+                                 pickQuest={(userUid, questData) => pickQuest(userUid, questData)}
                                  selectedQuest={selectedQuest}
                                  selectedQuestReqs={selectedQuestReqs}
                     />
@@ -240,4 +261,3 @@ export default function Home() {
 }
 
 //TODO reduce the number of props on each component, e.g passing player UID down, do it through one prop, not adding extra props
-//TODO build auth & replace all fetching with player UID

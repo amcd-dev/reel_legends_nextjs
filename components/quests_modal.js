@@ -1,8 +1,11 @@
 import styles from '../styles/quests.module.css'
 import {useEffect, useState} from "react";
 import {apiPath} from "../pages/dashboard";
+import {useAuth} from "../context/authContext";
 
 export const QuestsModal = (props) => {
+
+    const { user } = useAuth()
 
     if (!props.show) {
         return null
@@ -18,7 +21,7 @@ export const QuestsModal = (props) => {
                             {props.currentQuests.map((quest, i) => {
                                     if (quest.quest_state === 'unlocked') {
                                         return (
-                                            <li key={`unlockedKey_` + i} onClick={() => props.pickQuest(quest)}>{quest.quest_title}</li>
+                                            <li key={`unlockedKey_` + i} onClick={() => props.pickQuest(user.uid, quest)}>{quest.quest_title}</li>
                                         )
                                     }
                                 }
@@ -29,7 +32,7 @@ export const QuestsModal = (props) => {
                             {props.currentQuests.map((quest, i) => {
                                     if (quest.quest_state === 'complete') {
                                         return (
-                                            <li key={`unlockedKey_` + i} onClick={() => props.pickQuest(quest)}>{quest.quest_title}</li>
+                                            <li key={`unlockedKey_` + i} onClick={() => props.pickQuest(user.uid, quest)}>{quest.quest_title}</li>
                                         )
                                     }
                                 }

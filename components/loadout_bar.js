@@ -10,6 +10,7 @@ export const LoadoutBar = (props) => {
     const { user } = useAuth()
 
     const [loadout, setLoadout] = useState([])
+    // console.log('>>> Loadout (in loadout bar component): ', loadout)
     //Modals
     const [showBar, setShowBar] = useState(true)
     const [showRod, setShowRod] = useState(false)

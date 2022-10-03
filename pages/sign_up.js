@@ -2,6 +2,7 @@ import Link from "next/link";
 import {useState} from "react";
 import { useAuth } from "../context/authContext";
 import {apiPath} from "./dashboard";
+import {router} from "next/client";
 
 export default function SignUp() {
 
@@ -40,6 +41,7 @@ export default function SignUp() {
             const newData = await signUp(data.email, data.password)
             await createUser(newData.user.uid) //creating a new player
             await firstLoadout(newData.user.uid) //setting up their inventory and first loadout
+            await router.push('/dashboard')
 
         } catch (error) {
             console.log('!!! Logging signup error: ', error)
